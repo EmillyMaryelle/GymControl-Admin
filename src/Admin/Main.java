@@ -3,17 +3,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import Admin.Controller.Aluno;
+import Admin.Controller.Pagamento;
+import Admin.Controller.Personal;
+import Admin.Controller.Treino;
+
 public class Main {
-    private static List<Aluno> alunos = new ArrayList<>();
-    private static List<Treino> treinos = new ArrayList<>();
-    private static List<Aula> aulas = new ArrayList<>();
-    private static List<Pagamento> pagamentos = new ArrayList<>();
-    private static List<Resultado> resultados = new ArrayList<>();
-    private static Scanner scanner = new Scanner(System.in);
-    private static String nomeUsuario;
+    static List<Controller.Aluno> alunos = new ArrayList<>();
+    static List<Controller.Treino> treinos = new ArrayList<>();
+    static List<Controller.Aula> aulas = new ArrayList<>();
+    static List<Controller.Pagamento> pagamentos = new ArrayList<>();
+    static List<Controller.Resultado> resultados = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+    static String nomeUsuario;
 
     public static void main(String[] args) {
-    	System.out.println("Bem-vindo ao sistema GymControl, antes de iniciar preciso que me informe seu nome ou o código de permissão:");
+    	System.out.println("Bem-vindo ao sistema GymControl, antes de iniciar preciso que me informe seu nome ou o código de permissão: ");
         try {
             nomeUsuario = obterNomeUsuario();
         } catch (Exception e) {
@@ -53,7 +58,7 @@ public class Main {
     
 
     private static void exibirMenuPrincipal() {
-    	System.out.println("========Bem vindo ao GymControll" + nomeUsuario + "!");
+    	System.out.println("========Bem vindo ao GymControll  " + nomeUsuario + "!");
         System.out.println("1. Controle de Alunos");
         System.out.println("2. Cadastro de Treinos");
         System.out.println("3. Gestão de Aulas");
@@ -111,14 +116,14 @@ public class Main {
         System.out.print("CPF do aluno: ");
         String cpf = scanner.nextLine();
 
-        Aluno aluno = new Aluno(nome, cpf);
+        Controller.Aluno aluno = new Aluno(nome, cpf);
         alunos.add(aluno);
         System.out.println("Aluno cadastrado com sucesso!");
     }
 
     private static void listarAlunos() {
         System.out.println("\n===== Listagem de Alunos =====");
-        for (Aluno aluno : alunos) {
+        for (Controller.Aluno aluno : alunos) {
             System.out.println("Nome: " + aluno.getNome() + ", CPF: " + aluno.getCpf());
         }
     }
@@ -170,15 +175,15 @@ public class Main {
         String nomeAluno = scanner.nextLine();
         System.out.print("CPF do aluno: ");
         String cpfAluno = scanner.nextLine();
-        Aluno aluno = new Aluno(nomeAluno, cpfAluno);
-        Treino treino = new Treino(nomeTreino, descricaoTreino, horarioTreino, personal, aluno);
+        Controller.Aluno aluno = new Aluno(nomeAluno, cpfAluno);
+        Controller.Treino treino = new Treino(nomeTreino, descricaoTreino, horarioTreino, personal, aluno);
         treinos.add(treino);
         System.out.println("Treino cadastrado com sucesso!");
     }
 
     private static void listarTreinos() {
         System.out.println("\n===== Listagem de Treinos =====");
-        for (Treino treino : treinos) {
+        for (Controller.Treino treino : treinos) {
             System.out.println("Nome do treino: " + treino.getNome());
             System.out.println("Descrição: " + treino.getDescricao());
             System.out.println("Horário: " + treino.getHorario());
@@ -229,14 +234,14 @@ public class Main {
         String reservador = scanner.nextLine();
         System.out.print("Numero de participantes: ");
         int numParticipantes = scanner.nextInt();
-        Aula aula = new Aula(tipoAula, horarioAula, reservador, numParticipantes);
+        Controller.Aula aula = new Controller.Aula(tipoAula, horarioAula, reservador, numParticipantes);
         aulas.add(aula);
         System.out.println("Aula cadastrada com sucesso!");
     }
 
     private static void listarAulas() {
         System.out.println("\n===== Listagem de Aulas =====");
-        for (Aula aula : aulas) {
+        for (Controller.Aula aula : aulas) {
             System.out.println("Tipo da aula: " + aula.getTipo());
             System.out.println("Horário: " + aula.getHorario());
             System.out.println("Reservador: " + aula.getReservador());
@@ -287,7 +292,7 @@ public class Main {
         scanner.nextLine(); 
         System.out.print("Forma de pagamento (espécie, crédito, pix): ");
         String formaPagamento = scanner.nextLine();
-        Pagamento pagamento = new Pagamento(nomePagador, valorPagamento, formaPagamento, null);
+        Controller.Pagamento pagamento = new Pagamento(nomePagador, valorPagamento, formaPagamento, null);
         pagamentos.add(pagamento);
 
         System.out.println("Pagamento cadastrado com sucesso!");
@@ -295,7 +300,7 @@ public class Main {
 
     private static void listarPagamentos() {
         System.out.println("\n===== Listagem de Pagamentos =====");
-        for (Pagamento pagamento : pagamentos) {
+        for (Controller.Pagamento pagamento : pagamentos) {
         	System.out.println("Autorizante: " + pagamento.getNomeUsuario());
             System.out.println("Nome do cliente: " + pagamento.getNomePagador());
             System.out.println("Nome do pagador: " + pagamento.getNomePagador());
@@ -346,15 +351,13 @@ public class Main {
         System.out.println("\n===== Cadastro de Resultado =====");
         System.out.print("Nome do aluno: ");
         String nomeAluno = scanner.nextLine();
-        Aluno aluno = buscarAlunoPorNome(nomeAluno);
+        Controller.Aluno aluno = buscarAlunoPorNome(nomeAluno);
 
         if (aluno == null) {
             System.out.print("Telefone do aluno: ");
             String telefone = scanner.nextLine();
             System.out.print("Personal do aluno: ");
-            String personal = scanner.nextLine();
             System.out.print("Peso inicial do aluno: ");
-            double peso = scanner.nextDouble();
             scanner.nextLine();
             aluno = new Aluno(nomeAluno, telefone);
             alunos.add(aluno);
@@ -366,7 +369,7 @@ public class Main {
             System.out.print("Peso inicial do aluno: ");
             double peso = scanner.nextDouble();
             scanner.nextLine(); 
-            Resultado resultado = new Resultado(aluno, telefone, personal, peso);
+            Controller.Resultado resultado = new Controller.Resultado(aluno, telefone, personal, peso);
             resultados.add(resultado);
         }
         System.out.println("Resultado cadastrado com sucesso!");
@@ -376,10 +379,10 @@ public class Main {
         System.out.println("\n===== Atualizar Peso do Aluno =====");
         System.out.print("Nome do aluno: ");
         String nomeAluno = scanner.nextLine();
-        Aluno aluno = buscarAlunoPorNome(nomeAluno);
+        Controller.Aluno aluno = buscarAlunoPorNome(nomeAluno);
 
         if (aluno != null) {
-            Resultado resultadoExistente = buscarResultadoPorAluno(aluno);
+        	Controller.Resultado resultadoExistente = buscarResultadoPorAluno(aluno);
 
             if (resultadoExistente != null) {
                 System.out.println("Peso atual do aluno " + aluno.getNome() + ": " + resultadoExistente.getPeso());
@@ -399,7 +402,7 @@ public class Main {
 
     private static void listarResultados() {
         System.out.println("\n===== Listagem de Resultados =====");
-        for (Resultado resultado : resultados) {
+        for (Controller.Resultado resultado : resultados) {
             System.out.println("Nome do aluno: " + resultado.getAluno().getNome());
             System.out.println("Telefone: " + resultado.getTelefone());
             System.out.println("Personal: " + resultado.getPersonal());
@@ -408,8 +411,8 @@ public class Main {
         }
     }
 
-    private static Aluno buscarAlunoPorNome(String nomeAluno) {
-        for (Aluno aluno : alunos) {
+    private static Controller.Aluno buscarAlunoPorNome(String nomeAluno) {
+        for (Controller.Aluno aluno : alunos) {
             if (aluno.getNome().equalsIgnoreCase(nomeAluno)) {
                 return aluno;
             }
@@ -417,8 +420,8 @@ public class Main {
         return null;
     }
 
-    private static Resultado buscarResultadoPorAluno(Aluno aluno) {
-        for (Resultado resultado : resultados) {
+    private static Controller.Resultado buscarResultadoPorAluno(Controller.Aluno aluno) {
+        for (Controller.Resultado resultado : resultados) {
             if (resultado.getAluno().equals(aluno)) {
                 return resultado;
             }
@@ -428,43 +431,5 @@ public class Main {
 
 
 
-	public static List<Treino> getTreinos() {
-		return treinos;
-	}
 
-	public static void setTreinos(List<Treino> treinos) {
-		Main.treinos = treinos;
-	}
-
-	public static List<Aula> getAulas() {
-		return aulas;
-	}
-
-	public static void setAulas(List<Aula> aulas) {
-		Main.aulas = aulas;
-	}
-
-	public static List<Pagamento> getPagamentos() {
-		return pagamentos;
-	}
-
-	public static void setPagamentos(List<Pagamento> pagamentos) {
-		Main.pagamentos = pagamentos;
-	}
-
-	public static List<Resultado> getResultados() {
-		return resultados;
-	}
-
-	public static void setResultados(List<Resultado> resultados) {
-		Main.resultados = resultados;
-	}
-
-	public static String getNomeUsuario() {
-		return nomeUsuario;
-	}
-
-	public static void setNomeUsuario(String nomeUsuario) {
-		Main.nomeUsuario = nomeUsuario;
-	}
 }
